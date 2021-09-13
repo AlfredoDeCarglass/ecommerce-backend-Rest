@@ -1,16 +1,18 @@
 const express = require('express');
 const env = require('dotenv');
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const app = express();
 env.config();
 
 // routes
-const userRoutes = require('./routes/user');
+const authRoutes = require('./routes/auth');
+const adminRoutes = require('./routes/admin/auth');
 
 // mongodb connection 
 // mongodb+srv://root:<password>@cluster0.i6rzi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+
+// abrir una conexión a la base de datos 
 mongoose.connect(
     `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.i6rzi.mongodb.net/${process.env.MONGO_DB_DATABASE}?retryWrites=true&w=majority`,
     {
@@ -22,9 +24,13 @@ mongoose.connect(
     console.log('Database connected');
 });
 
-app.use(express.json());
-app.use('/api', userRoutes);
 
+// Para cargar la función de middleware, llame a app.use(), especificando la función de middleware
+app.use(express.json());
+app.use('/api', authRoutes);
+app.use('/api', adminRoutes);
+
+// Vincula y escucha las conexiones en el host y el puerto especificados.
 app.listen(process.env.PORT, () => {
     console.log(`Server is running ${process.env.PORT}`);
-});
+})
