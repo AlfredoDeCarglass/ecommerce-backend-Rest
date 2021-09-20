@@ -8,6 +8,7 @@ env.config();
 // routes
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin/auth');
+const categoryRoutes = require('./routes/category');
 
 // mongodb connection 
 // mongodb+srv://root:<password>@cluster0.i6rzi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
@@ -29,6 +30,7 @@ mongoose.connect(
 app.use(express.json());
 app.use('/api', authRoutes);
 app.use('/api', adminRoutes);
+app.use('/api', categoryRoutes);
 
 // Vincula y escucha las conexiones en el host y el puerto especificados.
 app.listen(process.env.PORT, () => {
